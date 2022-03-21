@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  quarkus-service-a:
+    build:
+      context: ./microServiceA
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: quarkus/microservice_a-jvm
+    ports:
+      - "8081:8081"
+
+  quarkus-service-b:
+    build:
+      context: ./microServiceB
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: quarkus/microservice_b-jvm
+    environment:
+      SERVICE_A: http://quarkus-service-a:8081
+    ports:
+      - "8082:8082"
+    depends_on:
+      - quarkus-service-a
